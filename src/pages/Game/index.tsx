@@ -1,11 +1,12 @@
 import Inputs from "../../components/Inputs";
 import Keyboard from "../../components/Keyboard";
-
-// import
-const word = "Rocket";
-const wordLength = word.length;
+import { initInputs, setInputs } from "../../redux/slices/gameSlice";
+import { useDispatch } from "react-redux";
 
 const Game = () => {
+  const dispatch = useDispatch();
+
+  dispatch(initInputs());
   return (
     <main>
       <Inputs />

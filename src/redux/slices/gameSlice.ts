@@ -1,30 +1,64 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
+import { RootState } from '../store'
 
-export interface CounterState {
-  value: number
+
+export type InputsParams = {value: string, right: boolean, wrongPlace: boolean};
+
+export interface GameState {
+  inputs: InputsParams[][],
+  word: string,
+  currentRow: number,
+  rightValues: [string] | [],
 }
 
-const initialState: CounterState = {
-  value: 0,
+const initialState: GameState = {
+  word: 'Rocket',
+  inputs: [[]],
+  currentRow: 0,
+  rightValues: [],
 }
 
-export const counterSlice = createSlice({
-  name: 'counter',
+export const gameSlice:any = createSlice({
+  name: 'game',
   initialState,
   reducers: {
-    increment: (state) => {
-      state.value += 1
+    setInputs: (state: RootState, action: PayloadAction<InputsParams>) => {
+      state.inputs = action.payload;
     },
-    decrement: (state) => {
-      state.value -= 1
+    changeInputs: (state: RootState, action: PayloadAction<{right:[[string, string]], wrongPlaced:[[string, string]]}>) => {
+      action.payload.wrongPlaced?.map((position) => {
+        state.inputs[position[0]][position[1]].wrongPlace = true;
+      })
+      action.payload.right?.map((position) => {
+        state.inputs[position[0]][position[1]].right = true;
+        state.inputs[position[0]][position[1]].wrongPlace = false;
+      })
     },
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload
+    setCurrentRow: (state: RootState, action: PayloadAction<number>) => {
+      state.currentRow = action.payload;
     },
+    setRightValues: (state: RootState, action: PayloadAction<[string]>) => {
+      state.rightValues = action.payload;
+    },
+    addRightValues: (state: RootState, action: PayloadAction<[[string, string]]>) => {
+      action.payload?.map((element: [string, string]) => {
+        state.rightValues[element[0]] = element[1];
+      })
+    },
+    initInputs: (state: any) => {
+      const array: any = [];
+      for (let i = 0; i < state.word.length; i++) {
+        const row = [];
+        for (let i = 0; i < 6; i++) {
+          row.push({value: '', right: false, wrongPlace: false});
+        }
+        array.push(row);
+      }
+      state.inputs = array;
+    }
   },
 })
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions
-
-export default counterSlice.reducer
+export const { setInputs, setCurrentRow, setRightValues, initInputs, changeInputs, addRightValues } = gameSlice.actions;
+export default gameSlice.reducer;
