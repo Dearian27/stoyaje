@@ -101,7 +101,9 @@ const Inputs = () => {
             </div>
           );
         })}
-        <button onClick={click}>Click</button>
+        <button className="button" onClick={click}>
+          Click
+        </button>
       </div>
     </>
   );
