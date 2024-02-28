@@ -59,6 +59,14 @@ const Inputs = () => {
     dispatch(setCurrentRow(currentRow + 1));
   };
 
+  let count = 0;
+  rightValues.map((el) => {
+    if (el) count++;
+  });
+  if (count === word.length) {
+    console.log("finish");
+  }
+  console.log(rightValues, rightValues.length);
   const click = () => checkValues(currentRow);
   console.log(rightValues);
   return (

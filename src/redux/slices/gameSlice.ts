@@ -10,13 +10,15 @@ export interface GameState {
   word: string,
   currentRow: number,
   rightValues: [string] | [],
+  attempts: number,
 }
 
 const initialState: GameState = {
-  word: 'Rocket',
+  word: 'Rock',
   inputs: [[]],
   currentRow: 0,
   rightValues: [],
+  attempts: 6,
 }
 
 export const gameSlice:any = createSlice({
@@ -48,9 +50,9 @@ export const gameSlice:any = createSlice({
     },
     initInputs: (state: any) => {
       const array: any = [];
-      for (let i = 0; i < state.word.length; i++) {
+      for (let i = 0; i < state.attempts; i++) {
         const row = [];
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < state.word.length; i++) {
           row.push({value: '', right: false, wrongPlace: false});
         }
         array.push(row);
